@@ -1,0 +1,17 @@
+vaultwarden:
+  name: "Vaultwarden"
+  description: "Gestionnaire de mot de passes (remplace Bitwarden/1Password)"
+  image: "vaultwarden/server:latest"
+  ports:
+    - "8080:80"
+  depends_on:
+    - reverse_proxy
+  folders:
+    - host: "/srv/vaultwarden/data"
+      container: "/data"
+  resources:
+    ram_mb: 256
+    disk_gb: 2
+  env:
+    SIGNUPS_ALLOWED: "false"
+  notes: "Lightweight Bitwarden-compatible server. Needs reverse proxy for HTTPS."
