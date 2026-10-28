@@ -1,0 +1,25 @@
+nextcloud:
+  name: "Nextcloud"
+  description: "Plateforme de stockage de fichiers (remplace GoogleDrive, iCloud)"
+  image: "nextcloud/server:latest"
+  ports:
+    - "8081:80"
+  depends_on:
+    - database
+folders:
+  - host: "/srv/nextcloud/data"
+    container: "/var/www/html/data"
+  - host: "/srv/nextcloud/config"
+    container: "/var/www/html/config"
+  resources:
+    ram_mb: 512
+    disk_gb: 5
+  env:
+    NEXTCLOUD_ADMIN_USER: "admin"
+    NEXTCLOUD_ADMIN_PASSWORD: "change-me"
+    NEXTCLOUD_TRUSTED_DOMAINS: "nextcloud.local"
+    MYSQL_HOST: "database"
+    MYSQL_DATABASE: "nextcloud"
+    MYSQL_USER: "nextcloud"
+    MYSQL_PASSWORD: "change-me"
+  notes: 
