@@ -6,7 +6,7 @@ nextcloud:
     - "8081:80"
   depends_on:
     - database
-folders:
+  folders:
   - host: "/srv/nextcloud/data"
     container: "/var/www/html/data"
   - host: "/srv/nextcloud/config"
