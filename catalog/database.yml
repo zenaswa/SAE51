@@ -1,4 +1,4 @@
-mariadb:
+database:
   name: "MariaDB"
   description: "Systeme de gestion de base de donnees pour les differents containers presents"
   image: "mariadb:latest"
