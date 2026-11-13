@@ -33,13 +33,44 @@ def describe_service(name, entry):
     if deps:
         print(f"      depends on  : {', '.join(deps)}")
 
+def resolve_dependencies(selection, catalog):
+    plan = set(selection)  # A set automatically prevents duplicates
+    queue = list(selection) # We process items from this queue
 
+    while queue:
+        current = queue.pop(0)
+
+        if current not in catalog:
+            print(f"  [Warning] Service '{current}' not found in catalog.")
+            continue
+
+        deps = catalog[current].get("depends_on") or []
+        for dep in deps:
+            if dep not in plan:
+                print(f"  [Info] Adding '{dep}' because '{current}' depends on it.")
+                plan.add(dep)
+                queue.append(dep)
+    return plan
 
 def main():
     catalog = load_catalog()
+    user_request = []
     print(f"Loaded {len(catalog)} service(s) from {CATALOG_DIR.name}")
     for name, entry in catalog.items():
         describe_service(name, entry)
+
+    print("\nEnter the services you want to deploy, separated by spaces.")
+    print("Example: vaultwarden nextcloud")
+    user_input = input("> ")
+    user_request = user_input.split()
+    if not user_request:
+        user_request = ["vaultwarden"]
+
+    final_plan = resolve_dependencies(user_request, catalog)
+
+    print("\n--- Final Deployment Plan ---")
+    for service in final_plan:
+        print(f"  - {service}")
         
 if __name__ == "__main__":
     main()
