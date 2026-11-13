@@ -1,0 +1,18 @@
+reverse_proxy:
+  name: "Caddy Reverse Proxy"
+  description: "Proxy inverse pour gérer le HTTPS et les domaines"
+  image: "caddy:latest"
+  ports:
+    - "80:80"
+    - "443:443"
+  depends_on: []
+  folders:
+    - host: "/srv/caddy/data"
+      container: "/data"
+    - host: "/srv/caddy/config"
+      container: "/config"
+  resources:
+    ram_mb: 128
+    disk_gb: 1
+  env: {}
+  notes: "Proxy inverse. Expose les ports 80 et 443 sur l'hôte."
